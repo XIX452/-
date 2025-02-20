@@ -58,7 +58,7 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.LeftAlt
 })
 
-local keyUrl = "https://raw.githubusercontent.com/xnothingff-zsujfb9uwaf9bsakubanofujbioq/asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasda/refs/heads/main/key.lua"
+local keyUrl = "https://raw.githubusercontent.com/XIX452/-/refs/heads/V/Key.lua"
 local keyFile = "key.lua"
 local savedKey = ""
 
@@ -97,7 +97,7 @@ end
 -- Execute external script
 local function executeScript()
     local success, errorMsg = pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/xnothingff-zsujfb9uwaf9bsakubanofujbioq/asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasda/refs/heads/main/..lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/XIX452/-/refs/heads/V/UI.lua"))()
     end)
 
     if not success then
