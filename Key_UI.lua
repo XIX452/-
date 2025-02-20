@@ -1,3 +1,9 @@
+if _G.KeyUIScriptHasRun then
+    warn("Anti multi execute")
+    return
+end
+_G.KeyUIScriptHasRun = true
+
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
@@ -39,19 +45,6 @@ end
 -- Usunięcie elementów GUI
 deleteElements(gameGui, {"Transition", "KeyHints"})
 
-local player = game.Players.LocalPlayer
-local guiName = "Key_execute"
-
--- Sprawdź, czy już istnieje GUI o nazwie "T"
-if player:FindFirstChild("PlayerGui") and player.PlayerGui:FindFirstChild(guiName) then
-    warn("Anti Multi execute")  -- Ostrzeżenie, jeśli GUI już istnieje
-    return  -- Zatrzymanie dalszego działania skryptu
-end
-
--- Jeśli GUI nie istnieje, stwórz je
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = guiName
-screenGui.Parent = player.PlayerGui  -- Dodaj GUI do PlayerGui
 
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 
@@ -65,7 +58,7 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.LeftAlt
 })
 
-local keyUrl = "https://raw.githubusercontent.com/XIX452/-/refs/heads/V/Key.lua"
+local keyUrl = "https://raw.githubusercontent.com/xnothingff-zsujfb9uwaf9bsakubanofujbioq/asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasda/refs/heads/main/key.lua"
 local keyFile = "key.lua"
 local savedKey = ""
 
@@ -104,7 +97,7 @@ end
 -- Execute external script
 local function executeScript()
     local success, errorMsg = pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/XIX452/-/refs/heads/V/UI.lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/xnothingff-zsujfb9uwaf9bsakubanofujbioq/asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasda/refs/heads/main/..lua"))()
     end)
 
     if not success then
