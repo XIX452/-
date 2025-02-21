@@ -1484,31 +1484,58 @@ task.spawn(function()
     end
 end)
     Tabs.all:AddParagraph({
-        Title = "Ballthemes",
+        Title = "Ballthemes and SideDribbles",
         Content = ""
     })
 local BallThemes = {
     "Default", "8-Bit", "Basketball", "Beachball", "Blue Emoji", "Bowling Ball", "Comet", "Cube",
-     "Disco", "Festive Lights", "Fireball", "Fishbowl", "Gumball", "Melon",
+    "Disco", "Festive Lights", "Fireball", "Fishbowl", "Gumball", "Melon",
     "Ninja", "Noob", "Pool", "Snowball", "Spiky", "Tennis", "The Bomb", "Tumbleweed", "Wiffle Ball"
 }
 
-local Dropdown = Tabs.all:AddDropdown("BallthemesDropdown", { 
-    Title = "Ballthemes", 
+local SideDribbles = {
+    "", "Ball Roll", "Elastico", "Flair Spin", "Heel to Ball Roll", "Hocus Pocus", 
+    "La Croqueta", "Portugal Chop", "Roulette", "Stepover In Out", "Stepover Out In"
+}
+
+local BallDropdown = Tabs.all:AddDropdown("BallthemesDropdown", { 
+    Title = "Ball themes", 
     Values = BallThemes, 
     Multi = false,
     Default = "Default",
 })
 
-local selectedTheme = BallThemes[1]
+local DribbleDropdown = Tabs.all:AddDropdown("EquippedSideDribbleDropdown", { 
+    Title = "Side Dribble", 
+    Values = SideDribbles, 
+    Multi = false,
+    Default = "",
+})
 
-Dropdown:OnChanged(function(value)
+local selectedTheme = BallThemes[1]
+local selectedDribble = "Step Over"
+
+BallDropdown:OnChanged(function(value)
     selectedTheme = value
+end)
+
+DribbleDropdown:OnChanged(function(value)
+    selectedDribble = value
 end)
 
 task.spawn(function()
     while true do
-        game.Players.LocalPlayer:SetAttribute("EquippedBallTheme", selectedTheme)
+        local player = game.Players.LocalPlayer
+
+        -- Sprawdza, czy aktualnie ustawiony jest taki sam jak wybrany, jeśli nie, to go zmienia
+        if player:GetAttribute("EquippedBallTheme") ~= selectedTheme then
+            player:SetAttribute("EquippedBallTheme", selectedTheme)
+        end
+        
+        if player:GetAttribute("EquippedSideDribble") ~= selectedDribble then
+            player:SetAttribute("EquippedSideDribble", selectedDribble)
+        end
+
         task.wait(0.4) 
     end
 end)
