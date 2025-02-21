@@ -1483,6 +1483,35 @@ task.spawn(function()
         end
     end
 end)
+    Tabs.all:AddParagraph({
+        Title = "Ballthemes",
+        Content = ""
+    })
+local BallThemes = {
+    "Default", "8-Bit", "Basketball", "Beachball", "Blue Emoji", "Bowling Ball", "Comet", "Cube",
+     "Disco", "Festive Lights", "Fireball", "Fishbowl", "Gumball", "Melon",
+    "Ninja", "Noob", "Pool", "Snowball", "Spiky", "Tennis", "The Bomb", "Tumbleweed", "Wiffle Ball"
+}
+
+local Dropdown = Tabs.all:AddDropdown("BallthemesDropdown", { 
+    Title = "Ballthemes", 
+    Values = BallThemes, 
+    Multi = false,
+    Default = "Default",
+})
+
+local selectedTheme = BallThemes[1]
+
+Dropdown:OnChanged(function(value)
+    selectedTheme = value
+end)
+
+task.spawn(function()
+    while true do
+        game.Players.LocalPlayer:SetAttribute("EquippedBallTheme", selectedTheme)
+        task.wait(0.4) 
+    end
+end)
 
 
     Tabs.all:AddParagraph({
