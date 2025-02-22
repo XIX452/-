@@ -147,19 +147,22 @@ end
 
 local function loop_all_func()
     while loop_all do
-        press_E()
-        tp_ball()
-        wait() 
-        kick_ball()
-        gol_ball()
-        reset_position()
-	wait() 
+        for i = 1, 9999999999999999999999999999999999999999999999999999999999999999999999999999999 do
+            if not loop_all then break end 
+            press_E()          
+            tp_ball()          
+            wait()         
+            kick_ball()        
+            gol_ball()         
+            reset_position()   
+            wait()
+        end
     end
 end
 
 if Tabs and Tabs.keybinds then
     Tabs.keybinds:AddKeybind("Keybind", {
-        Title = "Auto Goal (Avoid if GK)", 
+        Title = "Auto Goal (Toggle Script)", 
         Mode = "Toggle",
         Default = "Y",
         Callback = function()
@@ -170,6 +173,7 @@ if Tabs and Tabs.keybinds then
         end
     })
 end
+
 
 
 local loop_all = false
