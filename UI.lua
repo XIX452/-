@@ -1164,11 +1164,9 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
     end
 end)
 
-    Tabs.all:AddParagraph({
-        Title = "emotes",
-        Content = ""
-    })
 
+
+-- Emote IDs (mapping names to emote IDs)
 local EmoteIds = {
     ["Backflip"] = 13233744006,
     ["Brazil Spin"] = 14412538937,
@@ -1197,29 +1195,29 @@ local EmoteIds = {
     ["Wild Dance"] = 16499688823,
 }
 
-local currentAnimTrack = nil -- Przechowuje aktualną animację
-local isEmotePlaying = false -- Czy animacja jest aktualnie włączona?
+local currentAnimTrack = nil -- To store the current animation
+local isEmotePlaying = false -- To check if the animation is currently playing
 
--- Funkcja do przełączania emotki ON/OFF
+-- Function to toggle the emote on/off
 local function ToggleEmote(emoteId)
     local player = game.Players.LocalPlayer
     if player and player.Character then
         local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
         if humanoid then
             if isEmotePlaying and currentAnimTrack then
-                -- Jeśli animacja jest włączona, zatrzymaj ją
+                -- If the animation is already playing, stop it
                 currentAnimTrack:Stop()
                 currentAnimTrack = nil
                 isEmotePlaying = false
             else
-                -- Jeśli animacja jest wyłączona, uruchom nową
+                -- If the animation is not playing, play the new one
                 local animation = Instance.new("Animation")
                 animation.AnimationId = "rbxassetid://" .. emoteId
                 currentAnimTrack = humanoid:LoadAnimation(animation)
                 currentAnimTrack:Play()
                 isEmotePlaying = true
 
-                -- Jeśli animacja się skończy, zmień flagę na OFF
+                -- When the animation stops, set the flag to false
                 currentAnimTrack.Stopped:Connect(function()
                     isEmotePlaying = false
                     currentAnimTrack = nil
@@ -1229,34 +1227,19 @@ local function ToggleEmote(emoteId)
     end
 end
 
--- Dropdown do wybierania emotki
-local Dropdown = Tabs.all:AddDropdown("EmoteDropdown", {
-    Title = "Select Emote",
-    Values = {
-        "Backflip", "Brazil Spin", "Brazilian Dance", "Champions", "Chilly", "Chilly Legs",
-        "FCWC Trophy", "GOL GOL", "Griddy", "Helicopter Helicopter", "Knee Slide", "Laughing",
-        "Meditate", "Pigeon Dance", "Pump It", "Reverse Card", "Scythe Spin", "Shhh", "Shrug",
-        "Sui", "T-Rex", "Take the L", "The Panther", "Tree Pose", "Wild Dance"
-    },
-    Multi = false,
-    Default = "Backflip",
-    Callback = function(value)
-        -- Emote nie startuje automatycznie, tylko na przycisk
-    end
-})
 
--- Keybind do włączania/wyłączania emotki
-local Keybind = Tabs.all:AddKeybind("Keybind", {
+
+-- Keybind to toggle the emote (on/off)
+local Keybind = Tabs.keybinds:AddKeybind("Keybind", {
     Title = "Emote play/stop",
     Mode = "Toggle",
-    Default = "Four", -- Możesz zmienić klawisz
+    Default = "Four", -- Change the key as needed
     Callback = function()
-        local selectedEmote = Dropdown and Dropdown.Value
-        if selectedEmote then
-            local emoteId = EmoteIds[selectedEmote]
-            if emoteId then
-                ToggleEmote(emoteId) -- Przełączanie ON/OFF
-            end
+        local player = game.Players.LocalPlayer
+        local selectedEmote = player:GetAttribute("EquippedEmote") or "Backflip"
+        local emoteId = EmoteIds[selectedEmote]
+        if emoteId then
+            ToggleEmote(emoteId) -- Toggle emote on or off
         end
     end,
 })
@@ -1484,9 +1467,18 @@ task.spawn(function()
     end
 end)
     Tabs.all:AddParagraph({
-        Title = "Ballthemes and SideDribbles",
-        Content = ""
+        Title = "Ballthemes and SideDribbles and emote",
+        Content = "all is at Equipped"
     })
+-- Emotes list
+local Emotes = {
+    "Backflip", "Brazil Spin", "Brazilian Dance", "Champions", "Chilly", "Chilly Legs",
+    "FCWC Trophy", "GOL GOL", "Griddy", "Helicopter Helicopter", "Knee Slide", "Laughing",
+    "Meditate", "Pigeon Dance", "Pump It", "Reverse Card", "Scythe Spin", "Shhh", "Shrug",
+    "Sui", "T-Rex", "Take the L", "The Panther", "Tree Pose", "Wild Dance"
+}
+
+-- Ball themes and Side dribbles
 local BallThemes = {
     "Default", "8-Bit", "Basketball", "Beachball", "Blue Emoji", "Bowling Ball", "Comet", "Cube",
     "Disco", "Festive Lights", "Fireball", "Fishbowl", "Gumball", "Melon",
@@ -1498,6 +1490,7 @@ local SideDribbles = {
     "La Croqueta", "Portugal Chop", "Roulette", "Stepover In Out", "Stepover Out In"
 }
 
+-- Dropdowns for Ball Themes, Side Dribbles, and Emotes
 local BallDropdown = Tabs.all:AddDropdown("BallthemesDropdown", { 
     Title = "Ball themes", 
     Values = BallThemes, 
@@ -1512,9 +1505,19 @@ local DribbleDropdown = Tabs.all:AddDropdown("EquippedSideDribbleDropdown", {
     Default = "",
 })
 
-local selectedTheme = BallThemes[1]
-local selectedDribble = "Step Over"
+local EmoteDropdown = Tabs.all:AddDropdown("EquippedEmoteDropdown", { 
+    Title = "Emote", 
+    Values = Emotes, 
+    Multi = false,
+    Default = "Backflip",
+})
 
+-- Variables to store selected values
+local selectedTheme = BallThemes[1]
+local selectedDribble = ""
+local selectedEmote = "Backflip"
+
+-- Update selected values based on user input
 BallDropdown:OnChanged(function(value)
     selectedTheme = value
 end)
@@ -1523,23 +1526,60 @@ DribbleDropdown:OnChanged(function(value)
     selectedDribble = value
 end)
 
+EmoteDropdown:OnChanged(function(value)
+    selectedEmote = value
+end)
+
+-- Loop to constantly check and update the player's selected values
 task.spawn(function()
     while true do
         local player = game.Players.LocalPlayer
 
-        -- Sprawdza, czy aktualnie ustawiony jest taki sam jak wybrany, jeśli nie, to go zmienia
+        -- Check if the selected ball theme is applied, if not, apply it
         if player:GetAttribute("EquippedBallTheme") ~= selectedTheme then
             player:SetAttribute("EquippedBallTheme", selectedTheme)
         end
         
+        -- Check if the selected side dribble is applied, if not, apply it
         if player:GetAttribute("EquippedSideDribble") ~= selectedDribble then
             player:SetAttribute("EquippedSideDribble", selectedDribble)
+        end
+
+        -- Check if the selected emote is applied, if not, apply it
+        if player:GetAttribute("EquippedEmote") ~= selectedEmote then
+            player:SetAttribute("EquippedEmote", selectedEmote)
         end
 
         task.wait(0.4) 
     end
 end)
+    Tabs.all:AddParagraph({
+        Title = "Disable Freeze",
+        Content = ""
+    })
+local Toggle = Tabs.all:AddToggle("Freeze&DisableControls&CanUseAbilitiesToggle", { Title = "Disable Freeze", Default = false })
 
+local isLoopRunning = false
+
+Toggle:OnChanged(function(state)
+    local localPlayer = game.Players.LocalPlayer
+    
+    if state then
+        -- When the toggle is on (true), start the loop
+        if not isLoopRunning then
+            isLoopRunning = true
+            while isLoopRunning do
+                localPlayer:SetAttribute("CanUseAbilities", true)
+                localPlayer:SetAttribute("DisableControls", false)
+                localPlayer:SetAttribute("Freeze", false)
+                wait(0.01) -- Wait for 0.01 seconds before setting again
+            end
+        end
+    else
+        isLoopRunning = false
+
+    end
+end)
 
     Tabs.all:AddParagraph({
         Title = "colors",
