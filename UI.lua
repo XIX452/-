@@ -582,7 +582,7 @@ game.Workspace.Junk.ChildAdded:Connect(function(child)
 end)
 
 Tabs.keybinds:AddKeybind("Keybind", {
-    Title = "not kick ball (only gk)",
+    Title = "not kick ball (Under if Gk)",
     Mode = "Toggle",
     Default = "F1",
     Callback = function()
