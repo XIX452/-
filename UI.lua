@@ -1,4 +1,3 @@
-
 if _G.UIScriptHasRun then
     warn("Anti multi execute")
     return
@@ -148,7 +147,7 @@ end
 
 local function loop_all_func()
     while loop_all do
-        for i = 1, 9999999999999999999999999999999999999999999999999999999999999999999999999999999 do
+        for i = 1, 999999999999999999999999 do
             if not loop_all then break end 
             press_E()          
             tp_ball()          
