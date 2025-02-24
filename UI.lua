@@ -1,3 +1,4 @@
+
 if _G.UIScriptHasRun then
     warn("Anti multi execute")
     return
@@ -162,7 +163,7 @@ end
 
 if Tabs and Tabs.keybinds then
     Tabs.keybinds:AddKeybind("Keybind", {
-        Title = "Auto Goal (Toggle Script)", 
+        Title = "Auto Goal (Avoid if GK)", 
         Mode = "Toggle",
         Default = "Y",
         Callback = function()
