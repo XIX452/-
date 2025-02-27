@@ -85,6 +85,19 @@ end
 -- Check new players joining the server
 game:GetService("Players").PlayerAdded:Connect(checkPlayerJoin)
 
+Tabs.keybinds:AddKeybind("Keybind", {
+    Title = "tp lobby ranking",
+    Mode = "Toggle",
+    Default = "K",
+    Callback = function()
+        local teleportPlaceID = 110948941832728
+
+        local player = game.Players.LocalPlayer
+        if player then
+            game:GetService("TeleportService"):Teleport(teleportPlaceID, player)
+        end
+    end,
+})
 
 
 
@@ -147,7 +160,7 @@ end
 
 local function loop_all_func()
     while loop_all do
-        for i = 1, 999999999999999999999999 do
+        for i = 1, 99999999999999999999999999999999999999999999999 do
             if not loop_all then break end 
             press_E()          
             tp_ball()          
@@ -220,15 +233,17 @@ end
 
 local function loop_all_func()
     while loop_all do
+        for i = 1, 99999999999999999999999999999999999999999999999 do
+            if not loop_all then break end 
         tp_ball()
         wait()
         kick_ball()
         gol_ball()
         wait() 
-		wait() 
+	wait() 
+        end
     end
 end
-
 if Tabs and Tabs.keybinds then
     Tabs.keybinds:AddKeybind("Keybind", {
         Title = "Auto Goal (Under if GK)", 
