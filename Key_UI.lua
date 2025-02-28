@@ -13,7 +13,6 @@ if loadingScreen then
     loadingScreen:Destroy()
 end
 
--- Referencje do GameGui
 local gameGui = playerGui:FindFirstChild("GameGui")
 if not gameGui then
     while true do
